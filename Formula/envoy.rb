@@ -18,16 +18,11 @@ class Envoy < Formula
   depends_on "wget" => :build
 
   def install
-    args = %w[
-      --curses=no
-      --show_task_finish
-      --verbose_failures
-      --action_env=PATH=/usr/local/bin:/opt/local/bin:/usr/bin:/bin
-      --test_output=all
+    args = %W[
+      --action_env=PATH=#{Formula["llvm@10"].opt_bin}
     ]
-    system "bazelisk", "build", *args, "//source/exe:envoy-static"
 
-    pp Dir["**/*"]
+    system "bazelisk", "build", *args, "//source/exe:envoy-static"
   end
 
   test do
