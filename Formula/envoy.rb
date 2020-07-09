@@ -3,29 +3,22 @@ class Envoy < Formula
   homepage "https://www.envoyproxy.io"
   url "https://github.com/envoyproxy/envoy.git",
       :tag     => "v1.15.0",
-      :version => "50ef0945fa2c5da4bff7627c3abf41fdd3b7cffd"
+      :revision => "50ef0945fa2c5da4bff7627c3abf41fdd3b7cffd"
 
-  depends_on "aspell" => :build
+  depends_on "llvm@10" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "bazelisk" => :build
-  depends_on "clang-format" => :build
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
-  depends_on "go" => :build
   depends_on "libtool" => :build
   depends_on "ninja" => :build
-  depends_on "wget" => :build
 
   def install
     args = %W[
-      --action_env=PATH=#{Formula["llvm@10"].opt_bin}
+      --action_env=PATH=#{Formula["llvm@10"].opt_bin}:#{ENV["PATH"]}
     ]
 
     system "bazelisk", "build", *args, "//source/exe:envoy-static"
-  end
-
-  test do
-    system bin/"envoy", "--help"
   end
 end
