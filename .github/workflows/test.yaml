@@ -1,0 +1,15 @@
+name: envoy
+on: [push]
+
+jobs:
+  build:
+    name: Test
+    runs-on: macos-latest
+    steps:
+      - run: brew update-reset "$(brew --repository)"
+      - run: brew tap "$GITHUB_REPOSITORY"
+      - run: brew update-reset "$(brew --repository "$GITHUB_REPOSITORY")"
+      - run: brew install abolin123/core/envoy -s --verbose || true
+      - run: brew test abolin123/core/envoy --verbose
+      - run: brew audit --new-formula abolin123/core/envoy
+      - run: brew audit --strict abolin123/core/envoy
