@@ -15,6 +15,15 @@ class Envoy < Formula
   depends_on "ninja" => :build
 
   def install
-    system "bazelisk", "build", "--action_env=PATH=#{Formula["llvm@10"].opt_bin}:#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin", "//source/exe:envoy-static"
+    llvm = Formula["llvm@10"]
+    
+    ENV.prepend_create_path "LDFLAGS", "-L#{llvm.opt_lib} -Wl,-rpath,#{llvm.opt_lib}"
+    ENV.prepend_create_path "CPPFLAGS", "-I#{llvm.opt_include}"
+    
+    action_env = "PATH=#{llvm.opt_bin}:#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin"
+
+    target = "source/exe:envoy-static.stripped"
+    system "bazelisk", "build", "--action_env=#{action_env}", "//#{target}"
+    bin.install "bazel-bin/#{target}" => "envoy"
   end
 end
