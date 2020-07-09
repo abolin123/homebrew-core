@@ -15,10 +15,6 @@ class Envoy < Formula
   depends_on "ninja" => :build
 
   def install
-    args = %W[
-      --action_env=PATH=#{Formula["llvm@10"].opt_bin}:#{ENV["PATH"]}
-    ]
-
-    system "bazelisk", "build", *args, "//source/exe:envoy-static"
+    system "bazelisk", "build", "--action_env=PATH=#{Formula["llvm@10"].opt_bin}:#{ENV["PATH"]}:#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin", "//source/exe:envoy-static"
   end
 end
