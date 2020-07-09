@@ -17,8 +17,8 @@ class Envoy < Formula
   def install
     llvm = Formula["llvm@10"]
     
-    ENV.prepend_create_path "LDFLAGS", "-L#{llvm.opt_lib} -Wl,-rpath,#{llvm.opt_lib}"
-    ENV.prepend_create_path "CPPFLAGS", "-I#{llvm.opt_include}"
+    ENV.prepend_create_path "BAZEL_LINKOPTS", "-L#{llvm.opt_lib} -Wl,-rpath,#{llvm.opt_lib}"
+    ENV.prepend_create_path "BAZEL_CXXOPTS", "-I#{llvm.opt_include}"
     
     action_env = "PATH=#{llvm.opt_bin}:#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin"
 
