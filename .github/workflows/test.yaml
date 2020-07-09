@@ -9,7 +9,4 @@ jobs:
       - run: brew update-reset "$(brew --repository)"
       - run: brew tap "$GITHUB_REPOSITORY"
       - run: brew update-reset "$(brew --repository "$GITHUB_REPOSITORY")"
-      - run: brew install abolin123/core/envoy -s --verbose || true
-      - run: brew test abolin123/core/envoy --verbose
-      - run: brew audit --new-formula abolin123/core/envoy
-      - run: brew audit --strict abolin123/core/envoy
+      - run: brew install --verbose abolin123/core/envoy

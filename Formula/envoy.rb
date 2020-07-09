@@ -5,6 +5,7 @@ class Envoy < Formula
       :tag     => "v1.15.0",
       :version => "50ef0945fa2c5da4bff7627c3abf41fdd3b7cffd"
 
+  depends_on "llvm@10" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "bazelisk" => :build
@@ -14,6 +15,7 @@ class Envoy < Formula
   depends_on "ninja" => :build
 
   def install
+    ENV.prepend_path "PATH", Formula["llvm@10"].opt_bin
     system "bazelisk", "build", "//source/exe:envoy-static"
   end
 end
